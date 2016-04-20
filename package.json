@@ -1,7 +1,7 @@
 {
   "name": "meetinghaters-server",
   "version": "0.0.1",
-  "description": "Backend server for the android application MeetingHaters ",
+  "description": "Backend server for the Android application MeetingHaters",
   "author": "Denis Pettens <denis.pettens@gmail.com>",
   "contributors": [
     {
