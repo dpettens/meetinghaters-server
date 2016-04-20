@@ -1,0 +1,19 @@
+{
+    "name": "meetinghaters-server",
+    "version": "0.0.1",
+    "description": "Backend server for the android application MeetingHaters ",
+    "author": "Denis Pettens <denis.pettens@gmail.com>",
+    "contributors": [{
+        "name": "Ludovic Zipsin",
+        "email": "ludovic.j.r.zipsin@gmail.com"
+    }],
+    "private": true,
+    "scripts": {
+        "start": "node server.js"
+    },
+    "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://dpettens@bitbucket.org/dpettens/meetinghaters-server.git"
+    }
+}
