@@ -15,13 +15,11 @@ var pool  = mysql.createPool({
 /*
  * Get a connection to the database
  */
-function getConnection(next) {
-    pool.getConnection(function(error, connection) {
+exports.getConnection = (next) => {
+    pool.getConnection((error, connection) => {
         if (error)
             return next(error);
 
         next(null, connection);
     });
 };
-
-module.exports = getConnection;

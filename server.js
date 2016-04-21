@@ -22,11 +22,6 @@ app.use(morgan('dev'))
 var port = process.env.PORT || 8080;
 
 /*
- * Load the database
- */
-var db = require('./handlers/db');
-
-/*
  * Register all routes of the config/routes/index.js router to /api
  */
 app.use('/api', router);
