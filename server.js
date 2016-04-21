@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const morgan     = require('morgan');
 const mysql      = require('mysql');
 const config     = require('./config');
-const routes     = require('./routes');
+const router     = require('./routes');
 
 /*
  * Initial setup
@@ -43,9 +43,9 @@ connection.connect((error) => {
 });
 
 /*
- * Register routes form app/config/routes to /api
+ * Register all routes of the config/routes/index.js router to /api
  */
-app.use('/api', routes);
+app.use('/api', router);
 
 /*
  * Start the server
