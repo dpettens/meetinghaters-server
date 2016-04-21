@@ -5,5 +5,5 @@ exports.database = {
     host     : 'localhost',
     user     : 'root',
     password : 'root',
-    database : 'meetinghaters_dev'
+    database : 'MeetingHaters_dev'
 }
