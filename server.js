@@ -34,12 +34,12 @@ var connection = mysql.createConnection({
 });
 
 connection.connect((error) => {
-  if (err) {
+  if (error) {
     console.error('Error on the database connection : ' + error.stack);
     process.exit(1);
   }
 
-  console.log('Connected as id ' + connection.threadId);
+  console.log('Connected on the database as id ' + connection.threadId);
 });
 
 /*
