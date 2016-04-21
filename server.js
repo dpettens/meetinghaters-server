@@ -1,8 +1,6 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
 const morgan     = require('morgan');
-const mysql      = require('mysql');
-const config     = require('./config');
 const router     = require('./routes');
 
 /*
@@ -24,23 +22,9 @@ app.use(morgan('dev'))
 var port = process.env.PORT || 8080;
 
 /*
- * Database setup and connection
+ * Load the database
  */
-var connection = mysql.createConnection({
-    host     : config.database.host,
-    user     : config.database.user,
-    password : config.database.password,
-    database : config.database.database
-});
-
-connection.connect((error) => {
-  if (error) {
-    console.error('Error on the database connection : ' + error.stack);
-    process.exit(1);
-  }
-
-  console.log('Connected on the database as id ' + connection.threadId);
-});
+var db = require('./handlers/db');
 
 /*
  * Register all routes of the config/routes/index.js router to /api
