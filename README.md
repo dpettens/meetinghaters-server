@@ -20,8 +20,8 @@ DELETE	| /api/meetings/:meeting_id    | Delete a meeting
 
 Request | Route                        | Action
 --------|------------------------------|---------------------------
+POST	| /api/users        | Create a user
 GET	| /api/users/:user_id          | Get a user
-POST	| /api/users/:user_id          | Create a user
 PUT     | /api/users/:user_id          | Update a user
 DELETE  | /api/users/:user_id          | Delete a user
 
