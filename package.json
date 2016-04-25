@@ -11,7 +11,7 @@
   ],
   "private": true,
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "main": "server.js",
   "repository": {
