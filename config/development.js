@@ -7,3 +7,7 @@ exports.database = {
     password : 'root',
     database : 'MeetingHaters_dev'
 }
+
+exports.app = {
+    secret   : ''
+}

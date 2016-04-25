@@ -23,6 +23,12 @@ function users(router) {
                 res.status(200).json(result[0]);
             });
         });
+
+    // Route for authenticate the user
+    router.route('/authenticate')
+        .post((req, res) => {
+
+        ));
 }
 
 module.exports = users;

@@ -1,6 +1,7 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
 const morgan     = require('morgan');
+const config     = require('./config');
 const router     = require('./routes');
 
 /*
@@ -17,6 +18,9 @@ app.use(bodyParser.json());
 
 // Use morgan logger to log on the console
 app.use(morgan('dev'))
+
+// Set the secret key for JWT
+app.set('secret', config.app.secret);
 
 // Set the port
 app.set('port', process.env.PORT || 8080);
