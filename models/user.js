@@ -10,8 +10,11 @@ module.exports = {
                 if (error)
                     return next(error);
 
+                if(result.length === 0)
+                    return next(null, false);
+
                 connection.release();
-                next(null, result);
+                next(null, result[0]);
             });
         });
     }

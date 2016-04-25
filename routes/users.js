@@ -13,14 +13,14 @@ function users(router) {
 
     router.route('/users/:id_user')
         .get((req, res) => {
-            User.findById(req.params.id_user, (error, result) => {
+            User.findById(req.params.id_user, (error, user) => {
                 if (error)
-                    res.status(500).json('Error with the database');
+                    res.status(500).json({message : 'Error with the database'});
 
-                if (result.length === 0)
-                    res.status(404).json('Not Found');
+                if (!user)
+                    res.status(404).json({message : 'Not Found'});
 
-                res.status(200).json(result[0]);
+                res.status(200).json(user);
             });
         });
 
