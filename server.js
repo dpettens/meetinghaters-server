@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'))
 
 // Set the port
-var port = process.env.PORT || 8080;
+app.set('port', process.env.PORT || 8080);
 
 /*
  * Register all routes of the config/routes/index.js router to /api
@@ -29,6 +29,6 @@ app.use('/api', router);
 /*
  * Start the server
  */
-app.listen(port, () => {
-    console.log('App listening on port 3000');
+app.listen(app.get('port'), () => {
+    console.log('App listening on port ' + app.get('port'));
 });
