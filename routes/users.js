@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 const User = require('../models/user');
 
 /*
@@ -5,30 +7,120 @@ const User = require('../models/user');
  */
 function users(router) {
     router.route('/users')
-        .get((req, res) => {
-            res.status(200).json({
-                message: 'Connected on Users!'
+        .post((req, res) => {
+            var user = new User({
+                mail: req.body.mail,
+                password: req.body.password,
+                firstname: req.body.firstname,
+                surname: req.body.surname
+            });
+
+            user.save((error) => {
+                if (error && error.name === 'ValidationError')
+                    return res.status(400).json({
+                        error: error.validationErrors
+                    });
+
+                if (error)
+                    return res.status(500).json({
+                        message: 'Save failed. Error with the database.'
+                    });
+
+                return res.status(201).end();
             });
         });
 
     router.route('/users/:id_user')
         .get((req, res) => {
-            User.findById(req.params.id_user, (error, user) => {
+            User.findById(req.params.id_user, ['mail', 'firstname', 'surname', 'location', 'last_connection'], (error, user) => {
                 if (error)
-                    res.status(500).json({message : 'Error with the database'});
+                    return res.status(500).json({
+                        error: 'Find failed. Error with the database.'
+                    });
 
                 if (!user)
-                    res.status(404).json({message : 'Not Found'});
+                    return res.status(404).json({
+                        error: 'Find failed. User not found.'
+                    });
 
-                res.status(200).json(user);
+                return res.status(200).json(user);
+            });
+        })
+
+        .put((req, res) => {
+            User.findById(req.params.id_user, [], (error, user) => {
+                if (error)
+                    return res.status(500).json({
+                        error: 'Update failed. Error with the database.'
+                    });
+
+                if (!user)
+                    return res.status(404).json({
+                        error: 'Update failed. User not found.'
+                    });
+
+
+                user.update(req.body, (error) => {
+                    if (error)
+                        return res.status(500).json({
+                            error: 'Update failed. Error with the database.'
+                        });
+
+                    return res.status(204).end();
+                });
+            });
+        })
+
+        .delete((req, res) => {
+            User.findById(req.params.id_user, ['mail'], (error, user) => {
+                if (error)
+                    return res.status(500).json({
+                        error: 'Delete failed. Error with the database.'
+                    });
+
+                if (!user)
+                    return res.status(404).json({
+                        error: 'Delete failed. User not found.'
+                    });
+
+                user.delete((error) => {
+                    if (error)
+                        return res.status(500).json({
+                            error: 'Delete failed. Error with the database.'
+                        });
+
+                    return res.status(204).end();
+                });
             });
         });
 
     // Route for authenticate the user
     router.route('/authenticate')
         .post((req, res) => {
+            User.findById(req.body.mail, ['mail', 'password'], (error, user) => {
+                if (error)
+                    return res.status(500).json({
+                        error: 'Authentication failed. Error with the database.'
+                    });
 
-        ));
+                if (!user)
+                    return res.status(404).json({
+                        error: 'Authentication failed. User not found.'
+                    });
+
+                if (user.password !== req.body.password)
+                    return res.status(400).json({
+                        error: 'Authentication failed. Wrong password.'
+                    });
+
+                // Create the JWT token and send it
+                jwt.sign(user, config.app.secret, {}, (token) => {
+                    return res.status(200).json({
+                        token: token
+                    });
+                });
+            });
+        });
 }
 
 module.exports = users;

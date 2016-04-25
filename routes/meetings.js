@@ -4,7 +4,7 @@
 function meetings(router) {
     router.route('/meetings')
         .get((req, res) => {
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'Connected on Meetings!'
             });
         });
