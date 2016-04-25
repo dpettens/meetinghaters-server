@@ -1,4 +1,4 @@
-var db = require('../handlers/db');
+var db = require('../libs/db');
 
 module.exports = {
     findById: (id, next) => {
