@@ -43,32 +43,32 @@ class Meeting {
         });
 
         this.validate((error) => {
-            if(error)
+            if (error)
                 return next(error);
 
-                db.getConnection((error, connection) => {
+            db.getConnection((error, connection) => {
+                if (error)
+                    return next(error);
+
+                connection.query('UPDATE meetings SET name = ?,location = ?, \
+                    description = ?, time_pre = ?, time_start = ?, \ time_end = ?, \
+                    time_post = ?, WHERE _id = ?', [
+                    this.name,
+                    this.location,
+                    this.description,
+                    this.time_pre,
+                    this.time_start,
+                    this.time_end,
+                    this.time_post,
+                    this._id
+                ], (error) => {
                     if (error)
                         return next(error);
 
-                    connection.query('UPDATE meetings SET name = ?,location = ?, \
-                    description = ?, time_pre = ?, time_start = ?, \ time_end = ?, \
-                    time_post = ?, WHERE _id = ?', [
-                        this.name,
-                        this.location,
-                        this.description,
-                        this.time_pre,
-                        this.time_start,
-                        this.time_end,
-                        this.time_post,
-                        this._id
-                    ], (error) => {
-                        if (error)
-                            return next(error);
-
-                        connection.release();
-                        next(null);
-                    });
+                    connection.release();
+                    next(null);
                 });
+            });
         });
     }
 
