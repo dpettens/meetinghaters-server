@@ -92,27 +92,6 @@ class Meeting {
         });
     }
 
-    static findById(id, fields, next) {
-        db.getConnection((error, connection) => {
-            if (error)
-                return next(error);
-
-            if (fields.length === 0)
-                fields = default_fields;
-
-            connection.query('SELECT ?? FROM meetings WHERE _id = ?', [fields, id], (error, result) => {
-                if (error)
-                    return next(error);
-
-                if (result.length === 0)
-                    return next(null, false);
-
-                connection.release();
-                next(null, new Meeting(result[0]));
-            });
-        });
-    }
-
     static findByIdAndOwner(id, owner, fields, next) {
         db.getConnection((error, connection) => {
             if (error)
