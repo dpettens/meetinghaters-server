@@ -1,5 +1,44 @@
 "use strict";
-var db = require('../libs/db');
+const db = require('../libs/db');
+const Schema = require('validate');
+
+// Schema for validate a user object
+let validator = Schema({
+  mail: {
+    type: 'string',
+    required: true,
+    match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+    message: 'The Mail must be valid.'
+  },
+  password: {
+    type: 'string',
+    required: true,
+    match: /^.{4,20}$/,
+    message: 'The Password must be valid. Between 4 and 20 characters.'
+  },
+  firstname: {
+    type: 'string',
+    required: true,
+    match: /^.{2,}$/,
+    message: 'The firstname must be valid. At least 2 characters'
+  },
+  surname: {
+    type: 'string',
+    required: true,
+    match: /^.{2,}$/,
+    message: 'The lastname must be valid. At least 2 characters'
+  },
+  location: {
+    type: 'string',
+    required: false,
+    message: 'The location must be a string.'
+  },
+  last_connection: {
+    type: 'data',
+    required: false,
+    message: 'The last connection must be a date.'
+  }
+});
 
 class User {
     constructor(user) {
@@ -12,7 +51,7 @@ class User {
     }
 
     save(next) {
-        this.validate((error, next) => {
+        this.validate((error) => {
             if (error)
                 return next(error);
 
@@ -37,25 +76,30 @@ class User {
             this[key] = data[key];
         });
 
-        db.getConnection((error, connection) => {
-            if (error)
+        this.validate((error) => {
+            if(error)
                 return next(error);
 
-            connection.query('UPDATE users SET password = ?,firstname = ?, \
-            surname = ?, location = ?, last_connection = ? WHERE mail = ?', [
-                this.password,
-                this.firstname,
-                this.surname,
-                this.location,
-                this.last_connection,
-                this.mail
-            ], (error) => {
-                if (error)
-                    return next(error);
+                db.getConnection((error, connection) => {
+                    if (error)
+                        return next(error);
 
-                connection.release();
-                next(null);
-            });
+                    connection.query('UPDATE users SET password = ?,firstname = ?, \
+                    surname = ?, location = ?, last_connection = ? WHERE mail = ?', [
+                        this.password,
+                        this.firstname,
+                        this.surname,
+                        this.location,
+                        this.last_connection,
+                        this.mail
+                    ], (error) => {
+                        if (error)
+                            return next(error);
+
+                        connection.release();
+                        next(null);
+                    });
+                });
         });
     }
 
@@ -95,9 +139,19 @@ class User {
         });
     }
 
-    //check if the user exists already and all information are correct
     validate(next) {
-        next(false);
+        let errors = validator.validate(this);
+        if(errors.length === 0)
+            return next(false);
+
+        // fix an bug in the package validate with the property message
+        let error = new Error('ValidationError');
+        error.validationErrors = [];
+        errors.forEach((element) => {
+            error.validationErrors.push({message: element.message, path: element.path});
+        });
+
+        next(error);
     }
 }
 

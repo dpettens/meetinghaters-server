@@ -8,7 +8,7 @@ const User = require('../models/user');
 function users(router) {
     router.route('/users')
         .post((req, res) => {
-            User.findById(req.params.id_user, ['mail'], (error, result) => {
+            User.findById(req.body.mail, ['mail'], (error, result) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Save failed. Error with the database.'
@@ -27,7 +27,7 @@ function users(router) {
                 });
 
                 user.save((error) => {
-                    if (error && error.name === 'ValidationError')
+                    if (error && error.message === 'ValidationError')
                         return res.status(400).json({
                             error: error.validationErrors
                         });
@@ -73,6 +73,11 @@ function users(router) {
 
 
                 user.update(req.body, (error) => {
+                    if (error && error.message === 'ValidationError')
+                        return res.status(400).json({
+                            error: error.validationErrors
+                        });
+
                     if (error)
                         return res.status(500).json({
                             error: 'Update failed. Error with the database.'

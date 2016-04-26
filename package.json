@@ -24,6 +24,7 @@
     "express-unless": "^0.3.0",
     "jsonwebtoken": "^5.7.0",
     "morgan": "^1.7.0",
-    "mysql": "^2.10.2"
+    "mysql": "^2.10.2",
+    "validate": "^3.0.1"
   }
 }
