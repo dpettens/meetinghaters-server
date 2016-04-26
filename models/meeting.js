@@ -134,7 +134,7 @@ class Meeting {
         });
     }
 
-    static findAllById(id, fields, next) {
+    static findAllByUser(user, fields, next) {
         db.getConnection((error, connection) => {
             if (error)
                 return next(error);
@@ -142,7 +142,11 @@ class Meeting {
             if (fields.length === 0)
                 fields = default_fields;
 
-            connection.query('SELECT ?? FROM meetings WHERE mail = ?', [fields, id], (error, result) => {
+            fields.forEach((element, index) => {
+                fields[index] = 'meetings.' + element;
+            });
+
+            connection.query('SELECT ?? FROM meetings JOIN m2m_meetings_users as m2m ON m2m.id_user = ? AND meetings._id = m2m.id_meeting', [fields, user], (error, result) => {
                 console.log(error);
                 if (error)
                     return next(error);
