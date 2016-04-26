@@ -8,25 +8,37 @@ const User = require('../models/user');
 function users(router) {
     router.route('/users')
         .post((req, res) => {
-            var user = new User({
-                mail: req.body.mail,
-                password: req.body.password,
-                firstname: req.body.firstname,
-                surname: req.body.surname
-            });
-
-            user.save((error) => {
-                if (error && error.name === 'ValidationError')
-                    return res.status(400).json({
-                        error: error.validationErrors
-                    });
-
+            User.findById(req.params.id_user, ['mail'], (error, result) => {
                 if (error)
                     return res.status(500).json({
-                        message: 'Save failed. Error with the database.'
+                        error: 'Save failed. Error with the database.'
                     });
 
-                return res.status(201).end();
+                if (result)
+                    return res.status(409).json({
+                        error: 'Save failed. User already exists.'
+                    });
+
+                var user = new User({
+                    mail: req.body.mail,
+                    password: req.body.password,
+                    firstname: req.body.firstname,
+                    surname: req.body.surname
+                });
+
+                user.save((error) => {
+                    if (error && error.name === 'ValidationError')
+                        return res.status(400).json({
+                            error: error.validationErrors
+                        });
+
+                    if (error)
+                        return res.status(500).json({
+                            message: 'Save failed. Error with the database.'
+                        });
+
+                    return res.status(201).end();
+                });
             });
         });
 
