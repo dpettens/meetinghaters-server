@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `meetings` (
   `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `time_pre` datetime DEFAULT NULL,
   `time_start` datetime DEFAULT NULL,
+  `time_end` datetime DEFAULT NULL,
   `time_post` datetime DEFAULT NULL,
   `description` text COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -60,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `meetings` (
 CREATE TABLE IF NOT EXISTS `users` (
   `mail` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `firstname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `surname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `firstname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `surname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_connection` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
