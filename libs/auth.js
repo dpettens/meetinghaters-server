@@ -36,8 +36,8 @@ function auth(req, res, next) {
                     error: 'Authorization failed. User with the key not found.'
                 });
 
-            // save decoded for use in other routes if ever
-            req.decoded = decoded;
+            // save key for use in other routes
+            req.key = key;
             next();
         });
     });

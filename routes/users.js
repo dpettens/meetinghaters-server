@@ -42,9 +42,9 @@ function users(router) {
             });
         });
 
-    router.route('/users/:id_user')
+    router.route('/users/:user_id')
         .get((req, res) => {
-            User.findById(req.params.id_user, ['mail', 'firstname', 'surname', 'location', 'last_connection'], (error, user) => {
+            User.findById(req.params.user_id, ['mail', 'firstname', 'surname', 'location', 'last_connection'], (error, user) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Find failed. Error with the database.'
@@ -60,7 +60,7 @@ function users(router) {
         })
 
         .put((req, res) => {
-            User.findById(req.params.id_user, [], (error, user) => {
+            User.findById(req.params.user_id, [], (error, user) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Update failed. Error with the database.'
@@ -89,7 +89,7 @@ function users(router) {
         })
 
         .delete((req, res) => {
-            User.findById(req.params.id_user, ['mail'], (error, user) => {
+            User.findById(req.params.user_id, ['mail'], (error, user) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Delete failed. Error with the database.'
