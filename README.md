@@ -8,13 +8,13 @@ All routes are based on the software architectural style REST
 
 ### Meetings
 
-Request | Route                        | Action
---------|------------------------------|---------------------------
-GET     | /api/meetings                | Get all meetings of a user
-POST	| /api/meetings                | Create a meeting
-GET	    | /api/meetings/:meeting_id    | Get a meeting
-PUT	    | /api/meetings/:meeting_id    | Update a meeting
-DELETE	| /api/meetings/:meeting_id    | Delete a meeting
+Request | Route                               | Action
+--------|-------------------------------------|---------------------------
+GET     | /api/meetings                       | Get all meetings of a user
+POST	| /api/meetings                       | Create a meeting
+GET	    | /api/meetings/:owner/:meeting_id    | Get a meeting
+PUT	    | /api/meetings/:owner/:meeting_id    | Update a meeting
+DELETE	| /api/meetings/:owner/:meeting_id    | Delete a meeting
 
 ### Users
 
@@ -28,10 +28,10 @@ DELETE  | /api/users/:user_id          | Delete a user
 
 ### Meetings + Users
 
-Request | Route                                     | Action
---------|-------------------------------------------|---------------------------
-GET	    | /api/meetings/:meeting_id/users           | Get all users of a meeting
-POST 	| /api/meetings/:meeting_id/users/:user_id  | Add a user to a meeting
-GET	    | /api/meetings/:meeting_id/users/:user_id  | Get user's information of a meeting
-PUT 	| /api/meetings/:meeting_id/users/:user_id  | Update user's informations of a meeting
-DELETE 	| /api/meetings/:meeting_id/users/:user_id  | Remove a user of a meeting
+Request | Route                                            | Action
+--------|--------------------------------------------------|---------------------------
+GET	    | /api/meetings/:owner/:meeting_id/users           | Get all users of a meeting
+POST 	| /api/meetings/:owner/:meeting_id/users/:user_id  | Add a user to a meeting
+GET	    | /api/meetings/:owner/:meeting_id/users/:user_id  | Get user's information of a meeting
+PUT 	| /api/meetings/:owner/:meeting_id/users/:user_id  | Update user's informations of a meeting
+DELETE 	| /api/meetings/:owner/:meeting_id/users/:user_id  | Remove a user of a meeting
