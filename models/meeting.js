@@ -16,6 +16,42 @@ class Meeting {
         this.time_post = meeting.time_post;
     }
 
+    update(data, next) {
+        // update the meeting object with the new value
+        Object.keys(data).forEach((key) => {
+            this[key] = data[key];
+        });
+
+        this.validate((error) => {
+            if(error)
+                return next(error);
+
+                db.getConnection((error, connection) => {
+                    if (error)
+                        return next(error);
+
+                    connection.query('UPDATE meetings SET name = ?,location = ?, \
+                    description = ?, time_pre = ?, time_start = ?, \ time_end = ?, \
+                    time_post = ?, WHERE _id = ?', [
+                        this.name,
+                        this.location,
+                        this.description,
+                        this.time_pre,
+                        this.time_start,
+                        this.time_end,
+                        this.time_post,
+                        this._id
+                    ], (error) => {
+                        if (error)
+                            return next(error);
+
+                        connection.release();
+                        next(null);
+                    });
+                });
+        });
+    }
+
     static findById(id, fields, next) {
         db.getConnection((error, connection) => {
             if (error)
@@ -79,6 +115,10 @@ class Meeting {
                 next(null, meetings);
             });
         });
+    }
+
+    validate(next) {
+        next(false);
     }
 }
 
