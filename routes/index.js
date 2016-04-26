@@ -7,11 +7,15 @@ const router = require('express').Router();
 const auth = require('../libs/auth');
 const meetings = require('./meetings');
 const users = require('./users');
+const meetings_users = require('./meetings_users');
 
 // Bind all the routes specified in meetings.js
 meetings(router);
 
 // Bind all the routes specified in users.js
 users(router);
+
+// Bind all the routes specified in meetings_users.js
+meetings_users(router);
 
 module.exports = router;
