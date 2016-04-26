@@ -29,8 +29,13 @@ class Meeting {
                     if (error)
                         return next(error);
 
-                    connection.release();
-                    next(null);
+                    connection.query('INSERT INTO m2m_meetings_users SET id_user = ?, id_meeting = ?', [this.owner, this._id], (error) => {
+                        if (error)
+                            return next(error);
+
+                            connection.release();
+                            next(null);
+                    });
                 });
             });
         });
