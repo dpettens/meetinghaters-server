@@ -16,6 +16,26 @@ class Meeting {
         this.time_post = meeting.time_post;
     }
 
+    save(next) {
+        this.validate((error) => {
+            if (error)
+                return next(error);
+
+            db.getConnection((error, connection) => {
+                if (error)
+                    return next(error);
+
+                connection.query('INSERT INTO meetings SET ?', this, (error) => {
+                    if (error)
+                        return next(error);
+
+                    connection.release();
+                    next(null);
+                });
+            });
+        });
+    }
+
     update(data, next) {
         // update the meeting object with the new value
         Object.keys(data).forEach((key) => {
