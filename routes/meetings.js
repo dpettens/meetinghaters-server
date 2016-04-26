@@ -5,7 +5,15 @@ const Meeting = require('../models/meeting');
 function meetings(router) {
     router.route('/meetings')
         .get((req, res) => {
-            Meeting.findAllByUser(req.key, ['_id', 'name', 'owner', 'time_pre', 'time_start', 'time_end', 'time_post'], (error, meetings) => {
+            Meeting.findAllByUser(req.key, [
+                '_id',
+                'name',
+                'id_owner',
+                'time_pre',
+                'time_start',
+                'time_end',
+                'time_post'
+            ], (error, meetings) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Find failed. Error with the database.'
@@ -16,7 +24,9 @@ function meetings(router) {
         })
 
         .post((req, res) => {
-            Meeting.findByIdAndOwner(req.body._id, req.key, ['_id'], (error, meeting) => {
+            Meeting.findByIdAndOwner(req.body._id, req.key, [
+                '_id'
+            ], (error, meeting) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Save failed. Error with the database.'
@@ -30,7 +40,7 @@ function meetings(router) {
                 var meeting = new Meeting({
                     _id: req.body._id,
                     name: req.body.name,
-                    owner: req.key,
+                    id_owner: req.key,
                     description: req.body.description,
                     location: req.body.location,
                     time_pre: req.body.time_pre,
@@ -55,9 +65,9 @@ function meetings(router) {
             });
         });
 
-    router.route('/meetings/:owner/:meeting_id')
+    router.route('/meetings/:id_owner/:id_meeting')
         .get((req, res) => {
-            Meeting.findByIdAndOwner(req.params.meeting_id, req.params.owner, [], (error, meeting) => {
+            Meeting.findByIdAndOwner(req.params.id_meeting, req.params.id_owner, [], (error, meeting) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Find failed. Error with the database.'
@@ -73,12 +83,12 @@ function meetings(router) {
         })
 
         .put((req, res) => {
-            if (req.params.owner !== req.key)
+            if (req.params.id_owner !== req.key)
                 return res.status(401).json({
                     error: 'Update failed. You are not authorizate to update this meeting.'
                 });
 
-            Meeting.findByIdAndOwner(req.params.meeting_id, req.params.owner, [], (error, meeting) => {
+            Meeting.findByIdAndOwner(req.params.id_meeting, req.params.id_owner, [], (error, meeting) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Update failed. Error with the database.'
@@ -107,12 +117,14 @@ function meetings(router) {
         })
 
         .delete((req, res) => {
-            if (req.params.owner !== req.key)
+            if (req.params.id_owner !== req.key)
                 return res.status(401).json({
                     error: 'Update failed. You are not authorizate to update this meeting.'
                 });
 
-            Meeting.findByIdAndOwner(req.params.meeting_id, req.params.owner, ['_id'], (error, meeting) => {
+            Meeting.findByIdAndOwner(req.params.id_meeting, req.params.id_owner, [
+                '_id'
+            ], (error, meeting) => {
                 if (error)
                     return res.status(500).json({
                         error: 'Delete failed. Error with the database.'

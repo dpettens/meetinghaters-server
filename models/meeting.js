@@ -1,14 +1,24 @@
 "use strict";
 const db = require('../libs/db');
 
-let default_fields = ['_id', 'name', 'location', 'owner', 'description', 'time_pre', 'time_start', 'time_end', 'time_post'];
+let default_fields = [
+    '_id',
+    'name',
+    'location',
+    'id_owner',
+    'description',
+    'time_pre',
+    'time_start',
+    'time_end',
+    'time_post'
+];
 
 class Meeting {
     constructor(meeting) {
         this._id = meeting._id;
         this.name = meeting.name;
         this.location = meeting.location;
-        this.owner = meeting.owner;
+        this.id_owner = meeting.id_owner;
         this.description = meeting.description;
         this.time_pre = meeting.time_pre;
         this.time_start = meeting.time_start;
@@ -29,7 +39,11 @@ class Meeting {
                     if (error)
                         return next(error);
 
-                    connection.query('INSERT INTO m2m_meetings_users SET id_user = ?, id_meeting = ?', [this.owner, this._id], (error) => {
+                    connection.query('INSERT INTO m2m_meetings_users SET id_user = ?, \
+                    id_meeting = ?, id_owner = ?', [
+                        this.id_owner,
+                        this._id, this.id_owner
+                    ], (error) => {
                         if (error)
                             return next(error);
 
@@ -55,9 +69,9 @@ class Meeting {
                 if (error)
                     return next(error);
 
-                connection.query('UPDATE meetings SET name = ?,location = ?, \
-                    description = ?, time_pre = ?, time_start = ?, \ time_end = ?, \
-                    time_post = ?, WHERE _id = ?', [
+                connection.query('UPDATE meetings SET name = ?, location = ?, \
+                    description = ?, time_pre = ?, time_start = ?, time_end = ?, \
+                    time_post = ? WHERE _id = ?', [
                     this.name,
                     this.location,
                     this.description,
@@ -92,7 +106,7 @@ class Meeting {
         });
     }
 
-    static findByIdAndOwner(id, owner, fields, next) {
+    static findByIdAndOwner(id, id_owner, fields, next) {
         db.getConnection((error, connection) => {
             if (error)
                 return next(error);
@@ -100,7 +114,11 @@ class Meeting {
             if (fields.length === 0)
                 fields = default_fields;
 
-            connection.query('SELECT ?? FROM meetings WHERE _id = ? AND owner = ?', [fields, id, owner], (error, result) => {
+            connection.query('SELECT ?? FROM meetings WHERE _id = ? AND id_owner = ?', [
+                fields,
+                id,
+                id_owner
+            ], (error, result) => {
                 if (error)
                     return next(error);
 
@@ -125,7 +143,11 @@ class Meeting {
                 fields[index] = 'meetings.' + element;
             });
 
-            connection.query('SELECT ?? FROM meetings JOIN m2m_meetings_users as m2m ON m2m.id_user = ? AND meetings._id = m2m.id_meeting', [fields, user], (error, result) => {
+            connection.query('SELECT ?? FROM meetings JOIN m2m_meetings_users as \
+            m2m ON m2m.id_user = ? AND meetings._id = m2m.id_meeting', [
+                fields,
+                user
+            ], (error, result) => {
                 console.log(error);
                 if (error)
                     return next(error);

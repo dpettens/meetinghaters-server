@@ -84,7 +84,7 @@ class User {
                     if (error)
                         return next(error);
 
-                    connection.query('UPDATE users SET password = ?,firstname = ?, \
+                    connection.query('UPDATE users SET password = ?, firstname = ?, \
                     surname = ?, location = ?, last_connection = ? WHERE mail = ?', [
                         this.password,
                         this.firstname,
@@ -124,9 +124,19 @@ class User {
                 return next(error);
 
             if (fields.length === 0)
-                fields = ['mail', 'password', 'firstname', 'surname', 'location', 'last_connection'];
+                fields = [
+                    'mail',
+                    'password',
+                    'firstname',
+                    'surname',
+                    'location',
+                    'last_connection'
+                ];
 
-            connection.query('SELECT ?? FROM users WHERE mail = ?', [fields, id], (error, result) => {
+            connection.query('SELECT ?? FROM users WHERE mail = ?', [
+                fields,
+                id
+            ], (error, result) => {
                 if (error)
                     return next(error);
 
