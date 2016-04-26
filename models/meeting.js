@@ -52,6 +52,21 @@ class Meeting {
         });
     }
 
+    delete(next) {
+        db.getConnection((error, connection) => {
+            if (error)
+                return next(error);
+
+            connection.query('DELETE FROM meetings WHERE _id = ?', this._id, (error) => {
+                if (error)
+                    return next(error);
+
+                connection.release();
+                next(null);
+            });
+        });
+    }
+
     static findById(id, fields, next) {
         db.getConnection((error, connection) => {
             if (error)
