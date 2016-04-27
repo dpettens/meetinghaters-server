@@ -37,7 +37,7 @@ function users(router) {
                             message: 'Save failed. Error with the database.'
                         });
 
-                    return res.status(201).end();
+                    return res.redirect(307, '/api/authenticate');
                 });
             });
         });

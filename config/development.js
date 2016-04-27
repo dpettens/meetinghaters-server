@@ -9,5 +9,5 @@ exports.database = {
 }
 
 exports.app = {
-    secret: ''
+    secret: 'BY3hAZ2145RPAuXt87y55UI3R3I0Y80U'
 }
