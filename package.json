@@ -19,6 +19,7 @@
     "url": "git+https://dpettens@bitbucket.org/dpettens/meetinghaters-server.git"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "express-unless": "^0.3.0",

@@ -134,7 +134,7 @@ function users(router) {
                         error: 'Authentication failed. User not found.'
                     });
 
-                if (user.password !== req.body.password)
+                if (!user.validPassword(req.body.password))
                     return res.status(400).json({
                         error: 'Authentication failed. Wrong password.'
                     });

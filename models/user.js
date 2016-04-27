@@ -1,5 +1,6 @@
 "use strict";
 const db = require('../libs/db');
+const bcrypt = require('bcrypt-nodejs');
 const Schema = require('validate');
 
 // Schema for validate a user object
@@ -58,6 +59,8 @@ class User {
             db.getConnection((error, connection) => {
                 if (error)
                     return next(error);
+
+                this.password = this.hashPassword(this.password);
 
                 connection.query('INSERT INTO users SET ?', this, (error) => {
                     if (error)
@@ -162,6 +165,14 @@ class User {
         });
 
         next(error);
+    }
+
+    hashPassword(password) {
+        return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+    }
+
+    validPassword(password) {
+        return bcrypt.compareSync(password, this.password);
     }
 }
 
