@@ -70,7 +70,7 @@ class User {
                 this.password = this.hashPassword(this.password);
 
                 // if photo exists convert to binary otherwise generate identicon based on mail
-                if(this.photo !== null) {
+                if(this.photo != undefined || this.photo != null) {
                     this.photo = new Buffer(this.photo, 'base64');
                 } else {
                     this.photo = identicon.generateSync({
