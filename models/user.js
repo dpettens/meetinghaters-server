@@ -167,7 +167,8 @@ class User {
                 if (result.length === 0)
                     return next(null, false);
 
-                result[0].photo = new Buffer(result[0].photo, 'binary').toString('base64');
+                if(result[0].photo !== undefined)
+                    result[0].photo = new Buffer(result[0].photo, 'binary').toString('base64');
 
                 connection.release();
                 next(null, new User(result[0]));
