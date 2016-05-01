@@ -2,6 +2,7 @@
 const db = require('../libs/db');
 const bcrypt = require('bcrypt-nodejs');
 const Schema = require('validate');
+const identicon = require('identicon');
 
 // Schema for validate a user object
 let validator = Schema({
@@ -29,6 +30,11 @@ let validator = Schema({
     match: /^.{2,}$/,
     message: 'The lastname must be valid. At least 2 characters'
   },
+  photo: {
+    type: 'string',
+    required: false,
+    message: 'The photo must be a string.'
+  },
   location: {
     type: 'string',
     required: false,
@@ -47,6 +53,7 @@ class User {
         this.password = user.password;
         this.firstname = user.firstname;
         this.surname = user.surname;
+        this.photo = user.photo;
         this.location = user.location;
         this.last_connection = user.last_connection;
     }
@@ -61,6 +68,16 @@ class User {
                     return next(error);
 
                 this.password = this.hashPassword(this.password);
+
+                // if photo exists convert to binary otherwise generate identicon based on mail
+                if(this.photo !== null) {
+                    this.photo = new Buffer(this.photo, 'base64');
+                } else {
+                    this.photo = identicon.generateSync({
+                        id: this.mail,
+                        size: 50
+                    });
+                }
 
                 connection.query('INSERT INTO users SET ?', this, (error) => {
                     if (error)
@@ -82,6 +99,9 @@ class User {
         this.validate((error) => {
             if(error)
                 return next(error);
+
+                this.password = this.hashPassword(this.password);
+                this.photo = new Buffer(this.photo, 'base64');
 
                 db.getConnection((error, connection) => {
                     if (error)
@@ -132,6 +152,7 @@ class User {
                     'password',
                     'firstname',
                     'surname',
+                    'photo',
                     'location',
                     'last_connection'
                 ];
@@ -145,6 +166,8 @@ class User {
 
                 if (result.length === 0)
                     return next(null, false);
+
+                result[0].photo = new Buffer(result[0].photo, 'binary').toString('base64');
 
                 connection.release();
                 next(null, new User(result[0]));

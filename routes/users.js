@@ -23,7 +23,8 @@ function users(router) {
                     mail: req.body.mail,
                     password: req.body.password,
                     firstname: req.body.firstname,
-                    surname: req.body.surname
+                    surname: req.body.surname,
+                    photo: req.body.photo
                 });
 
                 user.save((error) => {
