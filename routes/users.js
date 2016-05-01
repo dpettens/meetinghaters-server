@@ -49,6 +49,7 @@ function users(router) {
                 'mail',
                 'firstname',
                 'surname',
+                'photo',
                 'location',
                 'last_connection'
             ], (error, user) => {
