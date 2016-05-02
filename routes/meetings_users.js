@@ -42,7 +42,56 @@ function meetings_users(router) {
             })
 
         .post((req, res) => {
+            MeetingUser.findByIdAndOwner(
+                req.body.id_meeting,
+                req.key,
+                req.body.id_owner, [
+                    'users.mail',
+                ], (error, result) => {
+                    if (error)
+                        return res.status(500).json({
+                            error: 'Save failed. Error with the database.'
+                        });
 
+                    if (!result)
+                        return res.status(401).json({
+                            error: 'Save failed. You are not authorizate to add a user of this meeting.'
+                        });
+
+                    MeetingUser.findByIdAndOwner(req.body.id_meeting, req.body.id_user, req.body.id_owner, [
+                        'users.mail'
+                    ], (error, meeting_user) => {
+                        if (error)
+                            return res.status(500).json({
+                                error: 'Save failed. Error with the database.'
+                            });
+
+                        if (meeting_user)
+                            return res.status(409).json({
+                                error: 'Save failed. Meeting\'s user already exists.'
+                            });
+
+                        var meeting_user = new MeetingUser({
+                            id_meeting: req.body.id_meeting,
+                            id_user: req.body.id_user,
+                            id_owner: req.body.id_owner
+                        });
+
+                        meeting_user.save((error) => {
+                            if (error && error.message === 'ValidationError')
+                                return res.status(400).json({
+                                    error: error.validationErrors
+                                });
+
+                            if (error)
+                                return res.status(500).json({
+                                    message: 'Save failed. Error with the database.'
+                                });
+
+                            return res.status(201).end();
+                        });
+                    });
+                });
         });
 
     router.route('/meetings/:id_owner/:id_meeting/users/:id_user')
@@ -89,7 +138,7 @@ function meetings_users(router) {
         })
 
         .put((req, res) => {
-            
+
         })
 
         .delete((req, res) => {
