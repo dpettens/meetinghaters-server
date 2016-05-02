@@ -35,7 +35,7 @@ function meetings(router) {
                 time_post: req.body.time_post
             });
 
-            meeting.save((error) => {
+            meeting.save((error, id) => {
                 if (error && error.message === 'ValidationError')
                     return res.status(400).json({
                         error: error.validationErrors
@@ -46,7 +46,9 @@ function meetings(router) {
                         message: 'Save failed. Error with the database.'
                     });
 
-                return res.status(201).end();
+                return res.status(200).json({
+                    id: id
+                });
             });
         });
 
