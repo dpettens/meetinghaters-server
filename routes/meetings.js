@@ -24,44 +24,29 @@ function meetings(router) {
         })
 
         .post((req, res) => {
-            Meeting.findByIdAndOwner(req.body._id, req.key, [
-                '_id'
-            ], (error, meeting) => {
+            var meeting = new Meeting({
+                name: req.body.name,
+                id_owner: req.key,
+                description: req.body.description,
+                location: req.body.location,
+                time_pre: req.body.time_pre,
+                time_start: req.body.time_start,
+                time_end: req.body.time_end,
+                time_post: req.body.time_post
+            });
+
+            meeting.save((error) => {
+                if (error && error.message === 'ValidationError')
+                    return res.status(400).json({
+                        error: error.validationErrors
+                    });
+
                 if (error)
                     return res.status(500).json({
-                        error: 'Save failed. Error with the database.'
+                        message: 'Save failed. Error with the database.'
                     });
 
-                if (meeting)
-                    return res.status(409).json({
-                        error: 'Save failed. Meeting with this ID already exists.'
-                    });
-
-                var meeting = new Meeting({
-                    _id: req.body._id,
-                    name: req.body.name,
-                    id_owner: req.key,
-                    description: req.body.description,
-                    location: req.body.location,
-                    time_pre: req.body.time_pre,
-                    time_start: req.body.time_start,
-                    time_end: req.body.time_end,
-                    time_post: req.body.time_post
-                });
-
-                meeting.save((error) => {
-                    if (error && error.message === 'ValidationError')
-                        return res.status(400).json({
-                            error: error.validationErrors
-                        });
-
-                    if (error)
-                        return res.status(500).json({
-                            message: 'Save failed. Error with the database.'
-                        });
-
-                    return res.status(201).end();
-                });
+                return res.status(201).end();
             });
         });
 
