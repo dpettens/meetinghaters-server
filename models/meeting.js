@@ -40,7 +40,7 @@ class Meeting {
                         return next(error);
 
 		            connection.release();
-                    next(null, esult.insertId);
+                    next(null, result.insertId);
                 });
             });
         });
