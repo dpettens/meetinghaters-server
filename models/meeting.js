@@ -36,10 +36,10 @@ class Meeting {
                     return next(error);
 
                 connection.query('INSERT INTO meetings SET ?', this, (error, result) => {
-		    if (error)
+		            if (error)
                         return next(error);
 
-		    connection.release();
+		            connection.release();
                     next(null);
                 });
             });
