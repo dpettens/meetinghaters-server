@@ -35,21 +35,12 @@ class Meeting {
                 if (error)
                     return next(error);
 
-                connection.query('INSERT INTO meetings SET ?', this, (error) => {
-                    if (error)
+                connection.query('INSERT INTO meetings SET ?', this, (error, result) => {
+		    if (error)
                         return next(error);
 
-                    connection.query('INSERT INTO m2m_meetings_users SET id_user = ?, \
-                    id_meeting = ?, id_owner = ?', [
-                        this.id_owner,
-                        this._id, this.id_owner
-                    ], (error) => {
-                        if (error)
-                            return next(error);
-
-                            connection.release();
-                            next(null);
-                    });
+		    connection.release();
+                    next(null);
                 });
             });
         });
