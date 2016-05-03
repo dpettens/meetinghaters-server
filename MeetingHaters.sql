@@ -80,7 +80,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 ALTER TABLE `m2m_meetings_users`
   ADD PRIMARY KEY (`_id`),
   ADD UNIQUE KEY `m2m_meetings_users_ibfk_3` (`id_user`,`id_meeting`),
-  ADD KEY `id_user` (`id_user`),
   ADD KEY `id_meeting` (`id_meeting`);
 
 --

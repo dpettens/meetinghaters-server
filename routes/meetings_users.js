@@ -66,9 +66,9 @@ function meetings_users(router) {
                         });
 
                     var meeting_user = new MeetingUser({
-                        id_meeting: req.body.id_meeting,
+                        id_meeting: req.params.id_meeting,
                         id_user: req.body.id_user,
-                        id_owner: req.body.id_owner
+                        id_owner: req.params.id_owner
                     });
 
                     meeting_user.save((error) => {
