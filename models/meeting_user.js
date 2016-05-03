@@ -90,7 +90,7 @@ class MeetingUser {
                 return next(error);
 
             connection.query('SELECT ?? FROM users JOIN m2m_meetings_users as m2m \
-            ON m2m.id_meeting = ? AND m2m.id_owner = ? AND m2M.id_user = ?', [
+            ON m2m.id_meeting = ? AND m2m.id_owner = ? AND m2m.id_user = ?', [
                 fields,
                 id_meeting,
                 id_owner,
