@@ -84,7 +84,32 @@ class MeetingUser {
         });
     }
 
-    static findByIdAndOwner(id_meeting, id_user, id_owner, fields, next) {
+    static findMeetingUserByIdAndOwner(id_meeting, id_user, id_owner, fields, next) {
+        db.getConnection((error, connection) => {
+            if (error)
+                return next(error);
+
+            connection.query('SELECT ?? FROM m2m_meetings_users WHERE id_meeting = ? \
+            AND id_owner = ? AND id_user = ?', [
+                fields,
+                id_meeting,
+                id_owner,
+                id_user
+            ], (error, result) => {
+                console.log(error);
+                if (error)
+                    return next(error);
+
+                if (result.length === 0)
+                    return next(null, false);
+
+                connection.release();
+                next(null, result[0]);
+            });
+        });
+    }
+
+    static findUserByIdAndOwner(id_meeting, id_user, id_owner, fields, next) {
         db.getConnection((error, connection) => {
             if (error)
                 return next(error);
@@ -132,10 +157,6 @@ class MeetingUser {
 
     validate(next) {
         next(false);
-    }
-
-    auth(element) {
-        return element.mail === key;
     }
 }
 
