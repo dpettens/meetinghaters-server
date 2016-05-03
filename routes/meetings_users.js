@@ -46,7 +46,7 @@ function meetings_users(router) {
                 req.body.id_meeting,
                 req.key,
                 req.body.id_owner, [
-                    'users.mail',
+                    'm2m._id',
                 ], (error, result) => {
                     if (error)
                         return res.status(500).json({
@@ -59,7 +59,7 @@ function meetings_users(router) {
                         });
 
                     MeetingUser.findByIdAndOwner(req.body.id_meeting, req.body.id_user, req.body.id_owner, [
-                        'users.mail'
+                        'm2m._id'
                     ], (error, meeting_user) => {
                         if (error)
                             return res.status(500).json({
