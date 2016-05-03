@@ -9,7 +9,7 @@ function meetings_users(router) {
         .get((req, res) => {
             MeetingUser.findMeetingUserByIdAndOwner(
                 req.params.id_meeting,
-                req.body.id_user,
+                req.key,
                 req.params.id_owner,
                 ['_id'] , (error, result) => {
                     if (error)
@@ -105,7 +105,7 @@ function meetings_users(router) {
         .get((req, res) => {
             MeetingUser.findMeetingUserByIdAndOwner(
                 req.params.id_meeting,
-                req.body.id_user,
+                req.key,
                 req.params.id_owner,
                 ['_id'] , (error, result) => {
                     if (error)
