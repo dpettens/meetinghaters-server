@@ -147,11 +147,81 @@ function meetings_users(router) {
         })
 
         .put((req, res) => {
+            if ((req.params.id_owner !== req.key) || (req.params.id_user !== req.key))
+                return res.status(401).json({
+                    error: 'Update failed. You are not authorizate to update this user.'
+                });
 
+            MeetingUser.findMeetingUserByIdAndOwner(
+                req.params.id_meeting,
+                req.params.id_user,
+                req.params.id_owner,
+                [
+                    '_id',
+                    'id_user',
+                    'id_meeting',
+                    'id_owner',
+                    'status',
+                    'reason',
+                    'expected_status'
+                ], (error, meeting_user) => {
+                    if (error)
+                        return res.status(500).json({
+                            error: 'Update failed. Error with the database.'
+                        });
+
+                    if (!meeting_user)
+                        return res.status(404).json({
+                            error: 'Update failed. Meeting\'s user not found.'
+                        });
+
+
+                    meeting_user.update(req.body, (error) => {
+                        if (error && error.message === 'ValidationError')
+                            return res.status(400).json({
+                                error: error.validationErrors
+                            });
+
+                        if (error)
+                            return res.status(500).json({
+                                error: 'Update failed. Error with the database.'
+                            });
+
+                        return res.status(204).end();
+                    });
+                });
         })
 
         .delete((req, res) => {
+            if ((req.params.id_owner !== req.key) || (req.params.id_user !== req.key))
+                return res.status(401).json({
+                    error: 'Update failed. You are not authorizate to delete this user.'
+                });
 
+            MeetingUser.findMeetingUserByIdAndOwner(
+                req.params.id_meeting,
+                req.params.id_user,
+                req.params.id_owner,
+                ['_id'], (error, meeting_user) => {
+                    if (error)
+                        return res.status(500).json({
+                            error: 'Delete failed. Error with the database.'
+                        });
+
+                    if (!meeting_user)
+                        return res.status(404).json({
+                            error: 'Delete failed. Meeting\'s user not found.'
+                        });
+
+                    meeting_user.delete((error) => {
+                        if (error)
+                            return res.status(500).json({
+                                error: 'Delete failed. Error with the database.'
+                            });
+
+                        return res.status(204).end();
+                    });
+                });
         });
 }
 

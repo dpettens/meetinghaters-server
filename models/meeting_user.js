@@ -70,11 +70,7 @@ class MeetingUser {
             if (error)
                 return next(error);
 
-            connection.query('DELETE FROM m2m_meetings_users WHERE id_user = ? \
-                AND id_meeting = ?', [
-                this.id_user,
-                this.id_meeting
-            ], (error) => {
+            connection.query('DELETE FROM m2m_meetings_users WHERE _id = ?', this._id, (error) => {
                 if (error)
                     return next(error);
 
