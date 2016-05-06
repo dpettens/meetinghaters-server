@@ -12,12 +12,6 @@ let validator = Schema({
     match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
     message: 'The Mail must be valid.'
   },
-  password: {
-    type: 'string',
-    required: true,
-    match: /^.{4,20}$/,
-    message: 'The Password must be valid. Between 4 and 20 characters.'
-  },
   firstname: {
     type: 'string',
     required: true,
@@ -41,7 +35,7 @@ let validator = Schema({
     message: 'The location must be a string.'
   },
   last_connection: {
-    type: 'data',
+    type: 'date',
     required: false,
     message: 'The last connection must be a date.'
   }
