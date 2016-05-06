@@ -94,7 +94,9 @@ class User {
             if(error)
                 return next(error);
 
-                this.password = this.hashPassword(this.password);
+                if(data.password !== undefined)
+                    this.password = this.hashPassword(this.password);
+
                 this.photo = new Buffer(this.photo, 'base64');
 
                 db.getConnection((error, connection) => {
