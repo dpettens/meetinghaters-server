@@ -35,7 +35,7 @@ let validator = Schema({
     message: 'The location must be a string.'
   },
   last_connection: {
-    type: 'date',
+    type: 'string',
     required: false,
     message: 'The last connection must be a date.'
   }
