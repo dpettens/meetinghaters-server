@@ -12,6 +12,10 @@ let validator = Schema({
     match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
     message: 'The Mail must be valid.'
   },
+  password : {
+    type: 'string',
+    message: 'The password is required.'
+  },
   firstname: {
     type: 'string',
     required: true,
@@ -61,7 +65,7 @@ class User {
                 if (error)
                     return next(error);
 
-                //this.password = this.hashPassword(this.password);
+                this.password = this.hashPassword(this.password);
 
                 // if photo exists convert to binary otherwise generate identicon based on mail
                 if(this.photo != undefined || this.photo != null) {
@@ -94,8 +98,8 @@ class User {
             if(error)
                 return next(error);
 
-                /*if(data.password !== undefined)
-                    this.password = this.hashPassword(this.password);*/
+                if(data.password !== undefined)
+                    this.password = this.hashPassword(this.password);
 
                 this.photo = new Buffer(this.photo, 'base64');
 
@@ -187,13 +191,13 @@ class User {
         next(error);
     }
 
-    /*hashPassword(password) {
+    hashPassword(password) {
         return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
     }
 
     validPassword(password) {
         return bcrypt.compareSync(password, this.password);
-    }*/
+    }
 }
 
 module.exports = User;
