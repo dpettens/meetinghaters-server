@@ -135,7 +135,8 @@ class Meeting {
             });
 
             connection.query('SELECT ?? FROM meetings JOIN m2m_meetings_users as \
-            m2m ON m2m.id_user = ? AND meetings._id = m2m.id_meeting AND STR_TO_DATE(meetings.time_start, \'%Y/%m/%d\') >= CURDATE()', [
+            m2m ON m2m.id_user = ? AND meetings._id = m2m.id_meeting WHERE \
+            STR_TO_DATE(meetings.time_start, "%Y/%m/%d") > (CURDATE() - INTERVAL 1 DAY)', [
                 fields,
                 user
             ], (error, result) => {
