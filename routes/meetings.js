@@ -8,6 +8,7 @@ function meetings(router) {
             Meeting.findAllByUser(req.key, [
                 '_id',
                 'name',
+                'description',
                 'id_owner',
                 'time_pre',
                 'time_start',
