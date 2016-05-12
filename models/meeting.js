@@ -62,7 +62,7 @@ class Meeting {
 
                 connection.query('UPDATE meetings SET name = ?, location = ?, \
                     description = ?, time_pre = ?, time_start = ?, time_end = ?, \
-                    time_post = ? WHERE _id = ? AND STR_TO_DATE(time_start, \'%Y/%m/%d\') >= CURDATE()', [
+                    time_post = ? WHERE _id = ?', [
                     this.name,
                     this.location,
                     this.description,
@@ -135,7 +135,7 @@ class Meeting {
             });
 
             connection.query('SELECT ?? FROM meetings JOIN m2m_meetings_users as \
-            m2m ON m2m.id_user = ? AND meetings._id = m2m.id_meeting', [
+            m2m ON m2m.id_user = ? AND meetings._id = m2m.id_meeting AND STR_TO_DATE(meetings.time_start, \'%Y/%m/%d\') >= CURDATE()', [
                 fields,
                 user
             ], (error, result) => {
