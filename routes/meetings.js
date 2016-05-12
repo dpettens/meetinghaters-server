@@ -9,6 +9,7 @@ function meetings(router) {
                 '_id',
                 'name',
                 'description',
+                'location',
                 'id_owner',
                 'time_pre',
                 'time_start',
