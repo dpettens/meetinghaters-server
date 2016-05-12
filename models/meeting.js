@@ -62,7 +62,7 @@ class Meeting {
 
                 connection.query('UPDATE meetings SET name = ?, location = ?, \
                     description = ?, time_pre = ?, time_start = ?, time_end = ?, \
-                    time_post = ? WHERE _id = ?', [
+                    time_post = ? WHERE _id = ? AND STR_TO_DATE(time_start, '%Y/%m/%d') >= CURDATE()', [
                     this.name,
                     this.location,
                     this.description,
