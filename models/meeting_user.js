@@ -47,7 +47,7 @@ class MeetingUser {
                     return next(error);
 
                 connection.query('UPDATE m2m_meetings_users SET id_owner = ?, status = ?, \
-                    reason = ?, excepted_status = ? WHERE id_user = ? AND id_meeting = ?', [
+                    reason = ?, expected_status = ? WHERE id_user = ? AND id_meeting = ?', [
                     this.id_owner,
                     this.status,
                     this.reason,
