@@ -92,7 +92,6 @@ class MeetingUser {
                 id_owner,
                 id_user
             ], (error, result) => {
-                console.log(error);
                 if (error)
                     return next(error);
 
