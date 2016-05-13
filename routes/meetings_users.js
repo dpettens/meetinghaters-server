@@ -147,7 +147,7 @@ function meetings_users(router) {
         })
 
         .put((req, res) => {
-            if ((req.params.id_owner !== req.key) || (req.params.id_user !== req.key))
+            if (!((req.params.id_owner === req.key) || (req.params.id_user === req.key)))
                 return res.status(401).json({
                     error: 'Update failed. You are not authorizate to update this user.'
                 });
@@ -193,7 +193,7 @@ function meetings_users(router) {
         })
 
         .delete((req, res) => {
-            if ((req.params.id_owner !== req.key) || (req.params.id_user !== req.key))
+            if (!((req.params.id_owner === req.key) || (req.params.id_user === req.key)))
                 return res.status(401).json({
                     error: 'Update failed. You are not authorizate to delete this user.'
                 });
