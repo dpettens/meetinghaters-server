@@ -100,7 +100,7 @@ class MeetingUser {
                     return next(null, false);
 
                 connection.release();
-                next(null, result[0]);
+                next(null, new MeetingUser(result[0]));
             });
         });
     }
