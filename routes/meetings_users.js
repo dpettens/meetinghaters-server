@@ -28,6 +28,7 @@ function meetings_users(router) {
                             'users.mail',
                             'users.firstname',
                             'users.surname',
+                            'users.photo',
                             'users.location',
                             'users.last_connection',
                             'm2m.status',
